@@ -1,4 +1,4 @@
-class Verifier
+#class Verifier
 
   #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
@@ -14,11 +14,39 @@ class Verifier
     end
   end
 
-  #print out text
-  for i in text
-    puts(i)
-  end
+  #print out the Block
+
+  def printBlock(text)
+    for i in text
+      puts(i)
+    end
+   end
 
   # Boolean methods to verify different aspects of the block are valid
 
-end
+
+
+
+  #Increment correctly method
+  def incrementCorrectly(block)
+
+    count = 0
+
+   for i in block
+     if(!count.to_s == i[0].to_s)
+       return false
+    end
+    count+=1
+   end
+
+    return true
+  end
+
+
+  printBlock(text)
+  puts()
+  puts(' Result of incrementCorrectly is: ', incrementCorrectly(text))
+
+
+
+#end

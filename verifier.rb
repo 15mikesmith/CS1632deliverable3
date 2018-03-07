@@ -31,12 +31,17 @@ end
 
   #split each block into seperate components
 
-  def splitBlock(block,blockNum)
-    newblock = block[blockNum].split(/[|:]/)
-    #newblock = newblock.split(':')
+  def splitBlock(text,blockNum)
+    newblock = text[blockNum].split(/[|:]/)
   end
 
   # Boolean methods to verify different aspects of the block are valid
+
+    def blockZero(text)
+      block0 = splitBlock(text,0)
+
+      return block0.length > 4
+    end
 
     def atLeastOneTransaction(text)
       return text.length > 0
@@ -68,6 +73,8 @@ end
   puts(splitBlock(text,2))
   puts()
   puts(atLeastOneTransaction(text))
+  puts()
+  puts(blockZero(text))
 
 
 #end

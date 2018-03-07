@@ -9,6 +9,7 @@ input_file = ARGV[0]
 text = []
 
 
+
 #Read text file
 #Eventually need to change to accept an input argument instead of hardcoded filename
 raise "Please enter a valid file" unless File.file?(input_file) #verifies that input file is a file
@@ -36,36 +37,61 @@ end
     #newblock = newblock.split(':')
   end
 
+
   # Boolean methods to verify different aspects of the block are valid
 
-    def atLeastOneTransaction(text)
+  def atLeastOneTransaction(text)
       return text.length > 0
-    end
+  end
+
+
+
+  def split_line line, num
+    new_line = line[num].split(/[|]/)
+  end
 
 
 
   #Increment correctly method
   def incrementCorrectly(block)
-
     count = 0
-
    for i in block
      if(!count.to_s == i[0].to_s)
        return false
     end
     count+=1
    end
-
     return true
   end
 
 
 
+  # method to convert each string to its hash
+  def string_to_hash arg 
+    return string_to_hash.unpack('U* #{arg}')
+  end
+
+
+
+  # method to check the hash
+  def check_hash
+    arg_val = 4
+    for i in 1...arg_val do
+      val = split_line(text, i)
+      curr_hash = val[1]
+      transactions = val[2]
+      timestamp = val[3]
+      old_hash = val[4]
+    end
+  end
+
+
+
   #TEST METHODS
-  printBlockChain(text)
-  puts()
+  #printBlockChain(text)
   #puts(' Result of incrementCorrectly is: ', incrementCorrectly(text))
-  puts(splitBlock(text,2))
+  #puts(splitBlock(text,1))
+  split_line(text, 2))
   puts()
   puts(atLeastOneTransaction(text))
 

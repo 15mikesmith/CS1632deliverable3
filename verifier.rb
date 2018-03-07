@@ -75,17 +75,19 @@ end
 
   # method to check the hash
   def check_hash
-    arg_val = 4
-    for i in 1...arg_val do
-      val = split_line(text, i)
-      curr_hash = val[1]
-      transactions = val[2]
-      timestamp = val[3]
-      old_hash = val[4]
-    end
+   
+
+
   end
 
-
+  def generate_hash
+    val = split_line(text, i)
+    curr_hash = val[1]
+    transactions = val[2]
+    timestamp = val[3]
+    old_hash = val[4]
+    hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
+  end
 
   #TEST METHODS
   #printBlockChain(text)

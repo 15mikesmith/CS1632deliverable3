@@ -4,14 +4,14 @@
 
   #Array to hold text. Structure is: Each index corresponds to a line in the file
 
-  raise "Enter a seed and only a seed" unless ARGV.count == 1
+  raise "Enter a file to be verified" unless ARGV.count == 1 #verifies that an argument has been passed in
   input_file = ARGV[0]
-  puts input_file
   text = []
 
 
   #Read text file
   #Eventually need to change to accept an input argument instead of hardcoded filename
+  raise "Please enter a valid file" unless File.file?(input_file) #verifies that input file is a file
   File.open(input_file, "r") do |f|
     f.each_line do |line|
       text << line

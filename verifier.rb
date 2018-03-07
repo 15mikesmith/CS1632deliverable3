@@ -3,11 +3,16 @@
   #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
   #Array to hold text. Structure is: Each index corresponds to a line in the file
+
+  raise "Enter a seed and only a seed" unless ARGV.count == 1
+  input_file = ARGV[0]
+  puts input_file
   text = []
+
 
   #Read text file
   #Eventually need to change to accept an input argument instead of hardcoded filename
-  File.open("sample.txt", "r") do |f|
+  File.open(input_file, "r") do |f|
     f.each_line do |line|
       text << line
      # puts line

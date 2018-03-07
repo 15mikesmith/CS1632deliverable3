@@ -73,12 +73,11 @@ end
 
 
 
-  # method to check the hash
+  # method to check the generated hash  
   def check_hash
-   
-
-
+    val = generate_hash
   end
+
 
   def generate_hash
     val = split_line(text, i)

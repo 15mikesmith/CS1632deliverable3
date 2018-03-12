@@ -109,12 +109,15 @@ end
 
 
 # method to check the generated hash
-def check_hash
-  val = generate_hash   
+def check_hash text
+  while @line_count < 10
+  var_array = create_var text
+  val = generate_hash var_array
   raise "Hashes do not match" unless val == @last_hash
+  end
 end
 
-def create_var 
+def create_var text
   split_val = split_line(text, @line_count)
   curr_hash = split_val[1]
   transactions = split_val[2]
@@ -135,6 +138,7 @@ end
 #printBlockChain(text)
 #puts(' Result of incrementCorrectly is: ', incrementCorrectly(text))
 puts(splitBlock(text,0))
+check_hash text
 #split_line(text, 2)
 #puts()
 #puts(atLeastOneTransaction(text))

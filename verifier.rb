@@ -37,7 +37,7 @@ def splitBlock(text, blockNum)
   newblock = text[blockNum].split(/[|:]/)
 end
 
-#split each Address into its sender and receiver components
+#Given a list of transactions, split each Address into its sender and receiver components
 def splitAddress(address)
   newAddress = address.join(",")
   newAddress = newAddress.split(/[,>]/)

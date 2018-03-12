@@ -122,6 +122,7 @@ def create_var text
   transactions = split_val[2]
   timestamp = split_val[3]
   old_hash = split_val[4]
+  return split_val
 end
 
 def generate_hash val 
@@ -137,10 +138,17 @@ def check_timestamp text
   split_val = split_line(text, @line_count)
   timestamp = split_val[3].to_f
   #puts("TIMESTAMP: #{timestamp} & LINECOUNT = #{@line_count}")
-  raise "Timestamp incorrect" unless timestamp > @last_timestamp
+  raise "Timestamp incorrect" unless timestamp >= @last_timestamp
   @last_timestamp = timestamp
   @line_count += 1
   end
+end
+
+def print_line text
+  transactions = create_var text
+ # puts transactions[2]
+  string = transactions[2].split(/>():/)
+ # string.each {|x| puts "#{x}"}
 end
 
 #TEST METHODS
@@ -149,6 +157,7 @@ end
 puts(splitBlock(text,0))
 #check_hash text
 check_timestamp text
+print_line text
 #split_line(text, 2)
 #puts()
 #puts(atLeastOneTransaction(text))

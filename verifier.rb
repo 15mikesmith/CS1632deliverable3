@@ -46,6 +46,35 @@ end
 
 # Boolean methods to verify different aspects of the block are valid
 
+def timeIncreaseCorrectly(text)
+
+#Array to hold times of all the blocks
+  times = []
+
+  #Get time from each block
+  x = 0
+  while x < text.length
+    currBlock = splitBlock(text, x)
+    times << currBlock[currBlock.length - 2]
+    x += 1
+  end
+ # puts(times)
+
+  #Verify the previous time is less than the current time
+
+  y = 1
+  while(y < times.length)
+    #puts(times[y])
+    #puts(times[y-1])
+    if (times[y] < times[y-1])
+
+      return false
+    end
+    y+=1
+  end
+  return true
+end
+
 def lastTransactionFromSystem(text)
 
   x = 0
@@ -53,33 +82,33 @@ def lastTransactionFromSystem(text)
 
     block = splitBlock(text, x)
 
-  #Remove first 2 elements
-  onlyAddresses = block.drop(2)
+    #Remove first 2 elements
+    onlyAddresses = block.drop(2)
 
-  #Remove last 2 elements
-  onlyAddresses = onlyAddresses.reverse.drop(2).reverse
+    #Remove last 2 elements
+    onlyAddresses = onlyAddresses.reverse.drop(2).reverse
 
-  #puts(onlyAddresses)
+    #puts(onlyAddresses)
 
-  #Split via > Symbol
-  newAddress = splitAddress(onlyAddresses)
+    #Split via > Symbol
+    newAddress = splitAddress(onlyAddresses)
 
-  #puts(newAddress)
+    #puts(newAddress)
 
-  #Remove billcoins from addresses
-  z = 0
-  while z < newAddress.length
-    newAddress[z] = newAddress[z].gsub(/\(.*?\)/, '')
-    z += 1
-  end
+    #Remove billcoins from addresses
+    z = 0
+    while z < newAddress.length
+      newAddress[z] = newAddress[z].gsub(/\(.*?\)/, '')
+      z += 1
+    end
 
-  #puts(newAddress[-2])
+    #puts(newAddress[-2])
 
-  if !(newAddress[-2] ==  "SYSTEM")
-    return false
-  end
+    if !(newAddress[-2] == "SYSTEM")
+      return false
+    end
 
-  x += 1
+    x += 1
   end
 
   return true
@@ -151,7 +180,7 @@ def invalidAddress(text)
   return true
 end
 
-
+#Verify Block 0 has only 1 transaction
 def blockZero(text)
   block0 = splitBlock(text, 0)
   return block0.length > 4
@@ -214,12 +243,12 @@ end
 
 def check_timestamp text
   while @line_count < 5
-  split_val = split_line(text, @line_count)
-  timestamp = split_val[3].to_f
-  #puts("TIMESTAMP: #{timestamp} & LINECOUNT = #{@line_count}")
-  raise "Timestamp incorrect" unless timestamp >= @last_timestamp
-  @last_timestamp = timestamp
-  @line_count += 1
+    split_val = split_line(text, @line_count)
+    timestamp = split_val[3].to_f
+    #puts("TIMESTAMP: #{timestamp} & LINECOUNT = #{@line_count}")
+    raise "Timestamp incorrect" unless timestamp >= @last_timestamp
+    @last_timestamp = timestamp
+    @line_count += 1
 
   end
 end
@@ -280,7 +309,9 @@ end
 #puts(invalidAddress(text))
 #puts()
 #puts(atLeastOneTransaction(text))
+#puts()
+#puts(lastTransactionFromSystem(text))
 puts()
-puts(lastTransactionFromSystem(text))
+puts(timeIncreaseCorrectly(text))
 
 #end

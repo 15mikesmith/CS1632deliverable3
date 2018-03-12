@@ -4,7 +4,7 @@
 
     #Test to see whether splitBock method splits a given block correctly into seperate components
 
-    def test_split_correctly
+    def test_split_block_correctly
       text = []
       File.open("sample.txt", "r") do |f|
         f.each_line do |line|

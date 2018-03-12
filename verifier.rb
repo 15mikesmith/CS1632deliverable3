@@ -98,7 +98,7 @@ end
   #printBlockChain(text)
   #puts(' Result of incrementCorrectly is: ', incrementCorrectly(text))
   #puts(splitBlock(text,1))
-  split_line(text, 2))
+  split_line(text, 2)
   puts()
   puts(atLeastOneTransaction(text))
   puts()

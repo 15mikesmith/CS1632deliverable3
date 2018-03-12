@@ -23,7 +23,6 @@ end
 
 
 #print out the Blockchain into each block
-
 def printBlockChain(text)
   for i in text
     puts(i)
@@ -32,20 +31,17 @@ end
 
 
 #split each block into seperate components
-
 def splitBlock(text, blockNum)
   newblock = text[blockNum].split(/[|:]/)
 end
 
 #split each Address into its sender and receiver components
-
 def splitAddress(address)
   newAddress = address.join(",").split(/[>]/)
 end
 
 
 # Boolean methods to verify different aspects of the block are valid
-
 #Verify Addresses are no more than 6 characters long
 def invalidAddress(text)
   block0 = splitBlock(text,0)
@@ -125,6 +121,7 @@ def create_var text
   return split_val
 end
 
+
 def generate_hash val 
   for i in 1...5
     hash_val = string_to_hash(val[i])
@@ -145,12 +142,14 @@ def check_timestamp text
 end
 
 
-def users names
+def users text
   transactions = create_var text
   string = transactions[2].split(/:/)
   for i in 0...string.length
-    users = string[i].split(/>/) 
-    puts "#{users[0]}: #{users[1]}billcoins"
+    users = string[i].split(/>()/) 
+    puts "1 #{users[0]} 2 #{users[2]}"
+    amount = users[2].split(//)
+    puts "#{amount[0]}"
   end
 end 
 
@@ -160,7 +159,7 @@ end
 #puts(splitBlock(text,0))
 #check_hash text
 check_timestamp text
-print_line text
+users text
 #split_line(text, 2)
 #puts()
 #puts(atLeastOneTransaction(text))

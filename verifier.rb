@@ -144,18 +144,15 @@ def check_timestamp text
   end
 end
 
-def print_line text
+
+def users names
   transactions = create_var text
-  #puts transactions[2]
   string = transactions[2].split(/:/)
-  for i in 0...string.length
-  #  puts "#{string[i]}\n"
-  end
   for i in 0...string.length
     users = string[i].split(/>/) 
     puts "#{users[0]}: #{users[1]}billcoins"
   end
-end
+end 
 
 #TEST METHODS
 #printBlockChain(text)

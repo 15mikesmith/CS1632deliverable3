@@ -7,7 +7,8 @@
 raise "Enter a file to be verified" unless ARGV.count == 1 #verifies that an argument has been passed in
 input_file = ARGV[0]
 text = []
-
+@last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
+@line_count = 0
 
 #Read text file
 #Eventually need to change to accept an input argument instead of hardcoded filename
@@ -109,17 +110,25 @@ end
 
 # method to check the generated hash
 def check_hash
-  val = generate_hash
+  val = generate_hash   
+  raise "Hashes do not match" unless val == @last_hash
 end
 
+def create_var 
+  split_val = split_line(text, @line_count)
+  curr_hash = split_val[1]
+  transactions = split_val[2]
+  timestamp = split_val[3]
+  old_hash = split_val[4]
+  @line_count += 1
+end
 
-def generate_hash
-  val = split_line(text, i)
-  curr_hash = val[1]
-  transactions = val[2]
-  timestamp = val[3]
-  old_hash = val[4]
-  hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
+def generate_hash val 
+  for i in 1...5
+    hash_val = string_to_hash(val[i])
+  end
+  @last_hash = val[@line_count]
+ # hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
 end
 
 #TEST METHODS

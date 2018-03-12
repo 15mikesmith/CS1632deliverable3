@@ -9,6 +9,7 @@ input_file = ARGV[0]
 text = []
 @last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
 @line_count = 0
+@last_timestamp = 0
 
 #Read text file
 #Eventually need to change to accept an input argument instead of hardcoded filename
@@ -110,11 +111,9 @@ end
 
 # method to check the generated hash
 def check_hash text
-  while @line_count < 10
   var_array = create_var text
   val = generate_hash var_array
   raise "Hashes do not match" unless val == @last_hash
-  end
 end
 
 def create_var text
@@ -123,7 +122,6 @@ def create_var text
   transactions = split_val[2]
   timestamp = split_val[3]
   old_hash = split_val[4]
-  @line_count += 1
 end
 
 def generate_hash val 
@@ -134,11 +132,23 @@ def generate_hash val
  # hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
 end
 
+def check_timestamp text
+  while @line_count < 10
+  split_val = split_line(text, @line_count)
+  timestamp = split_val[3].to_f
+  #puts("TIMESTAMP: #{timestamp} & LINECOUNT = #{@line_count}")
+  raise "Timestamp incorrect" unless timestamp > @last_timestamp
+  @last_timestamp = timestamp
+  @line_count += 1
+  end
+end
+
 #TEST METHODS
 #printBlockChain(text)
 #puts(' Result of incrementCorrectly is: ', incrementCorrectly(text))
 puts(splitBlock(text,0))
-check_hash text
+#check_hash text
+check_timestamp text
 #split_line(text, 2)
 #puts()
 #puts(atLeastOneTransaction(text))

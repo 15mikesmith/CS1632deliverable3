@@ -46,13 +46,52 @@ end
 
 # Boolean methods to verify different aspects of the block are valid
 
+def lastTransactionFromSystem(text)
+
+  x = 0
+  while x < text.length
+
+    block = splitBlock(text, x)
+
+  #Remove first 2 elements
+  onlyAddresses = block.drop(2)
+
+  #Remove last 2 elements
+  onlyAddresses = onlyAddresses.reverse.drop(2).reverse
+
+  #puts(onlyAddresses)
+
+  #Split via > Symbol
+  newAddress = splitAddress(onlyAddresses)
+
+  #puts(newAddress)
+
+  #Remove billcoins from addresses
+  z = 0
+  while z < newAddress.length
+    newAddress[z] = newAddress[z].gsub(/\(.*?\)/, '')
+    z += 1
+  end
+
+  #puts(newAddress[-2])
+
+  if !(newAddress[-2] ==  "SYSTEM")
+    return false
+  end
+
+  x += 1
+  end
+
+  return true
+end
+
 
 def atLeastOneTransaction(text)
   x = 0
   while x < text.length
-    block0 = splitBlock(text, x)
+    block = splitBlock(text, x)
     #Remove first 2 elements
-    onlyAddresses = block0.drop(2)
+    onlyAddresses = block.drop(2)
 
     #Remove last 2 elements
     onlyAddresses = onlyAddresses.reverse.drop(2).reverse
@@ -73,10 +112,10 @@ def invalidAddress(text)
   x = 0
   while x < text.length
 
-    transaction = splitBlock(text, 2)
+    block = splitBlock(text, 2)
 
     #Remove first 2 elements
-    onlyAddresses = transaction.drop(2)
+    onlyAddresses = block.drop(2)
 
     #Remove last 2 elements
     onlyAddresses = onlyAddresses.reverse.drop(2).reverse
@@ -228,18 +267,20 @@ end
 #puts(' Result of incrementCorrectly is: ', incrementCorrectly(text))
 #puts(splitBlock(text,0))
 #check_hash text
-check_timestamp text
-users text
-check_name 'Bill', 'Gina', 500
+#check_timestamp text
+#users text
+#check_name 'Bill', 'Gina', 500
 
 #split_line(text, 2)
 #puts()
 #puts(atLeastOneBlock(text))
 #puts()
 #puts(blockZero(text))
+#puts()
+#puts(invalidAddress(text))
+#puts()
+#puts(atLeastOneTransaction(text))
 puts()
-puts(invalidAddress(text))
-puts()
-puts(atLeastOneTransaction(text))
+puts(lastTransactionFromSystem(text))
 
 #end

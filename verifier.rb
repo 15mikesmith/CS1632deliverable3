@@ -10,6 +10,7 @@ text = []
 @last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
 @line_count = 0
 @last_timestamp = 0
+@users = []
 
 #Read text file
 #Eventually need to change to accept an input argument instead of hardcoded filename
@@ -124,7 +125,7 @@ end
 
 def generate_hash val 
   for i in 1...5
-    hash_val = string_to_hash(val[i])
+    hash_val = hash_val + val[i].encode!('UTF-16', 'UTF-8')
   end
   @last_hash = val[@line_count]
  # hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
@@ -148,10 +149,34 @@ def users text
   for i in 0...string.length
     users = string[i].split(/>()/) 
     puts "1 #{users[0]} 2 #{users[2]}"
-    amount = users[2].split(//)
-    puts "#{amount[0]}"
   end
 end 
+
+
+def check_name giver, receiver, amount
+  giver_exists = false
+  receiver_exists = false
+  @names.each {|x| 
+    if giver == x
+      giver.coins -= amount
+      giver_exists = true
+    end
+    if receiver == x
+      receiver.coins += amount
+      receiver_exists = true
+    end 
+  }
+
+  if(!giver_exists)
+    giv = Users::new giv, amount
+    @names << giv
+  end
+
+  if(!receiver_exists)
+    rec = Users::new reciever, amount
+    @names << rec
+  end
+end
 
 #TEST METHODS
 #printBlockChain(text)
@@ -160,6 +185,7 @@ end
 #check_hash text
 check_timestamp text
 users text
+check_name 'Bill', 'Gina', 500
 #split_line(text, 2)
 #puts()
 #puts(atLeastOneTransaction(text))

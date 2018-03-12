@@ -4,8 +4,9 @@
 
 #Array to hold text. Structure is: Each index corresponds to a line in the file
 
-raise "Enter a file to be verified" unless ARGV.count == 1 #verifies that an argument has been passed in
-input_file = ARGV[0]
+#raise "Enter a file to be verified" unless ARGV.count == 1 #verifies that an argument has been passed in
+input_file = "sample.txt"
+#input_file = ARGV[0]
 text = []
 @last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
 @line_count = 0
@@ -38,35 +39,75 @@ end
 
 #split each Address into its sender and receiver components
 def splitAddress(address)
-  newAddress = address.join(",").split(/[>]/)
+  newAddress = address.join(",")
+  newAddress = newAddress.split(/[,>]/)
 end
 
 
 # Boolean methods to verify different aspects of the block are valid
+
+
+def atLeastOneTransaction(text)
+  x = 0
+  while x < text.length
+    block0 = splitBlock(text, x)
+    #Remove first 2 elements
+    onlyAddresses = block0.drop(2)
+
+    #Remove last 2 elements
+    onlyAddresses = onlyAddresses.reverse.drop(2).reverse
+
+    if onlyAddresses.length == 0
+      return false
+    end
+
+    x += 1
+  end
+  return true
+end
+
+
 #Verify Addresses are no more than 6 characters long
 def invalidAddress(text)
-  block0 = splitBlock(text,0)
-  #Remove first 2 elements
-  onlyAddresses = block0.drop(2)
 
-  #Remove last 2 elements
-  onlyAddresses = onlyAddresses.reverse.drop(2).reverse
+  x = 0
+  while x < text.length
 
-  #Split via > Symbol
-  newAddress = splitAddress(onlyAddresses)
+    transaction = splitBlock(text, 2)
 
-  #Verify that each adress is 6 charcaters or less and is not numeric
-  for i in newAddress
+    #Remove first 2 elements
+    onlyAddresses = transaction.drop(2)
 
-  i = i.gsub(/\(.*?\)/, '')
+    #Remove last 2 elements
+    onlyAddresses = onlyAddresses.reverse.drop(2).reverse
 
-  if i.length > 6
-      return false
+    #puts(onlyAddresses)
+
+    #Split via > Symbol
+    newAddress = splitAddress(onlyAddresses)
+
+    #puts(newAddress)
+
+    #Remove billcoins from addresses
+    z = 0
+    while z < newAddress.length
+      newAddress[z] = newAddress[z].gsub(/\(.*?\)/, '')
+      z += 1
     end
 
-    if i.is_a?(Numeric)
-      return false
+
+    #Verify that each adress is 6 charcaters or less and is not numeric
+    for i in newAddress
+
+      if i.length > 6
+        return false
+      end
+
+      if i.is_a?(Numeric)
+        return false
+      end
     end
+    x += 1
   end
   return true
 end
@@ -77,7 +118,8 @@ def blockZero(text)
   return block0.length > 4
 end
 
-def atLeastOneTransaction(text)
+#Verify there is at least 1 block in the blockchain
+def atLeastOneBlock(text)
   return text.length > 0
 end
 
@@ -123,12 +165,12 @@ def create_var text
 end
 
 
-def generate_hash val 
+def generate_hash val
   for i in 1...5
     hash_val = hash_val + val[i].encode!('UTF-16', 'UTF-8')
   end
   @last_hash = val[@line_count]
- # hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
+  # hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
 end
 
 def check_timestamp text
@@ -139,6 +181,7 @@ def check_timestamp text
   raise "Timestamp incorrect" unless timestamp >= @last_timestamp
   @last_timestamp = timestamp
   @line_count += 1
+
   end
 end
 
@@ -147,16 +190,16 @@ def users text
   transactions = create_var text
   string = transactions[2].split(/:/)
   for i in 0...string.length
-    users = string[i].split(/>()/) 
+    users = string[i].split(/>()/)
     puts "1 #{users[0]} 2 #{users[2]}"
   end
-end 
+end
 
 
 def check_name giver, receiver, amount
   giver_exists = false
   receiver_exists = false
-  @names.each {|x| 
+  @names.each {|x|
     if giver == x
       giver.coins -= amount
       giver_exists = true
@@ -164,21 +207,23 @@ def check_name giver, receiver, amount
     if receiver == x
       receiver.coins += amount
       receiver_exists = true
-    end 
+    end
   }
-
+=begin
   if(!giver_exists)
     giv = Users::new giv, amount
     @names << giv
   end
 
   if(!receiver_exists)
-    rec = Users::new reciever, amount
+    rec = Users::new receiver, amount
     @names << rec
   end
+=end
 end
 
 #TEST METHODS
+
 #printBlockChain(text)
 #puts(' Result of incrementCorrectly is: ', incrementCorrectly(text))
 #puts(splitBlock(text,0))
@@ -186,13 +231,15 @@ end
 check_timestamp text
 users text
 check_name 'Bill', 'Gina', 500
+
 #split_line(text, 2)
 #puts()
-#puts(atLeastOneTransaction(text))
+#puts(atLeastOneBlock(text))
 #puts()
 #puts(blockZero(text))
 puts()
 puts(invalidAddress(text))
-
+puts()
+puts(atLeastOneTransaction(text))
 
 #end

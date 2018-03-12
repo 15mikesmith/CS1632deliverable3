@@ -134,7 +134,7 @@ def generate_hash val
 end
 
 def check_timestamp text
-  while @line_count < 10
+  while @line_count < 5
   split_val = split_line(text, @line_count)
   timestamp = split_val[3].to_f
   #puts("TIMESTAMP: #{timestamp} & LINECOUNT = #{@line_count}")
@@ -146,15 +146,21 @@ end
 
 def print_line text
   transactions = create_var text
- # puts transactions[2]
-  string = transactions[2].split(/>():/)
- # string.each {|x| puts "#{x}"}
+  #puts transactions[2]
+  string = transactions[2].split(/:/)
+  for i in 0...string.length
+  #  puts "#{string[i]}\n"
+  end
+  for i in 0...string.length
+    users = string[i].split(/>/) 
+    puts "#{users[0]}: #{users[1]}billcoins"
+  end
 end
 
 #TEST METHODS
 #printBlockChain(text)
 #puts(' Result of incrementCorrectly is: ', incrementCorrectly(text))
-puts(splitBlock(text,0))
+#puts(splitBlock(text,0))
 #check_hash text
 check_timestamp text
 print_line text

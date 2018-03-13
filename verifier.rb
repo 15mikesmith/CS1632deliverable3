@@ -206,7 +206,7 @@ end
 def incrementCorrectly(block)
   count = 0
   for i in block
-    if (!count.to_s == i[0].to_s)
+    if !(count.to_s == i[0].to_s)
       return false
     end
     count += 1

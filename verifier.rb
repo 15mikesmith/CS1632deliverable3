@@ -12,28 +12,30 @@ def initialize
   @line_count = 0
   @last_timestamp = 0
   @users = []
+  @text = []
 end
 
-text = []
 
 def run file
   Flamegraph.generate('flamegrapher.html') do
-  open_file file
-  puts(atLeastOneBlock(text))
+  open_file file, @text
+  users_run @text
+  puts(atLeastOneBlock(@text))
   puts()
-  puts(blockZero(text))
+  puts(blockZero(@text))
   puts()
-  puts(validAddress(text))
+  puts(validAddress(@text))
   puts()
-  puts(atLeastOneTransaction(text))
+  puts(atLeastOneTransaction(@text))
   puts()
-  puts(lastTransactionFromSystem(text))
+  puts(lastTransactionFromSystem(@text))
   puts()
+  print_users
   #puts(timeIncreaseCorrectly(text))
   end
 end
 
-def open_file file
+def open_file file, text
   File.open(file, "r") do |f|
   f.each_line do |line|
     text << line
@@ -250,6 +252,8 @@ def check_hash text
   raise "Hashes do not match" unless val == @last_hash
 end
 
+
+
 def create_var text
   split_val = split_line(text, @line_count)
   curr_hash = split_val[1]
@@ -258,6 +262,7 @@ def create_var text
   old_hash = split_val[4]
   return split_val
 end
+
 
 
 def generate_hash val
@@ -269,32 +274,28 @@ def generate_hash val
 end
 
 def check_timestamp text
-  while @line_count < 5
-    split_val = split_line(text, @line_count)
+  x = 0
+  while x < text.length
+    split_val = split_line(text, x)
     timestamp = split_val[3].to_f
     #puts("TIMESTAMP: #{timestamp} & LINECOUNT = #{@line_count}")
     raise "Timestamp incorrect" unless timestamp >= @last_timestamp
     @last_timestamp = timestamp
-    @line_count += 1
+    x += 1
 
   end
 end
 
 
 def users text
-  transactions = create_var text
-  string = transactions[2].split(/:/)
-  for i in 0...string.length
-    users = string[i].split(/>()/)
-    puts "1 #{users[0]} 2 #{users[2]}"
-  end
+  users = text.split(/[()>]/)
+  return users
 end
 
 
 def search_users giver, receiver, amount
   giver_exists = false
   receiver_exists = false
-  exists = [giver_exists, receiver_exists]
   @users.each {|x|
     if giver == x.name
       x.coins -= amount
@@ -305,23 +306,31 @@ def search_users giver, receiver, amount
       receiver_exists = true
     end
   }
+
+  exists = [giver_exists, receiver_exists]
+  puts exists
   return exists
 end 
 
-def add_user array, user, type, amount
+
+def add_user  user, type, amount
   if(type == 0)
-    giv = Users::new user, 0 - amount
-    array << giv
+    giv = Users::new user, 0
+    @users << giv
   end
 
   if(type == 1)
     rec = Users::new user, amount
-    array << rec
+    @users << rec
   end
 end
 
 def print_users
-  @users.each {|x| puts "#{x.name}: #{x.coins} billcoins"}
+  @users.each {|x| 
+    if x.name != "SYSTEM"
+      puts "#{x.name}: #{x.coins} billcoins"
+    end
+  }
 end 
 #TEST METHODS
 
@@ -333,15 +342,22 @@ end
 #users text
 
 
-def users_run
-  ret_array = search_users 'Bill', 'Gina', 500
-  if ret_array[0] == false
-    add_user @users, "Bill", 0, 500
+def users_run text
+  i = 0
+  info = []
+  while i < text.length
+    curr_text = splitBlock(text, i)
+    puts curr_text[2]
+    info = users curr_text[2]
+    ret_array = search_users info[0], info[1], info[2].to_i
+    if ret_array[0] == false
+      add_user  info[0], 0, info[2].to_i
+    end
+    if ret_array[1] == false
+      add_user  info[1], 1, info[2].to_i
+    end
+    i += 1
   end
-  if ret_array[1] == false
-    add_user @users, 'Gina', 1, 500
-  end
-  print_users
 end
 
 

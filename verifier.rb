@@ -75,6 +75,8 @@ def timeIncreaseCorrectly(text)
   return true
 end
 
+#Verify that the last transaction in the blockchain is from SYSTEM
+
 def lastTransactionFromSystem(text)
 
   x = 0

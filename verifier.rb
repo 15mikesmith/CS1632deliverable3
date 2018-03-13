@@ -43,6 +43,9 @@ def splitAddress(address)
   newAddress = newAddress.split(/[,>]/)
 end
 
+def has_digits?(str)
+  str.count("0-9") > 0
+end
 
 # Boolean methods to verify different aspects of the block are valid
 
@@ -138,12 +141,12 @@ end
 
 
 #Verify Addresses are no more than 6 characters long
-def invalidAddress(text)
+def validAddress(text)
 
   x = 0
   while x < text.length
 
-    block = splitBlock(text, 2)
+    block = splitBlock(text, x)
 
     #Remove first 2 elements
     onlyAddresses = block.drop(2)
@@ -173,7 +176,7 @@ def invalidAddress(text)
         return false
       end
 
-      if i.is_a?(Numeric)
+      if has_digits?(i)#i.is_a?(Numeric)
         return false
       end
     end
@@ -308,7 +311,7 @@ end
 #puts()
 #puts(blockZero(text))
 #puts()
-#puts(invalidAddress(text))
+#puts(validAddress(text))
 #puts()
 #puts(atLeastOneTransaction(text))
 #puts()

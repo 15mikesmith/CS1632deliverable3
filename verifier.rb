@@ -1,28 +1,49 @@
 require_relative 'users'
+require 'flamegraph'
 
+
+
+class Verifier
 #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
 #Array to hold text. Structure is: Each index corresponds to a line in the file
+def initialize
+  @last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
+  @line_count = 0
+  @last_timestamp = 0
+  @users = []
+end
 
-#raise "Enter a file to be verified" unless ARGV.count == 1 #verifies that an argument has been passed in
-input_file = "sample.txt"
-#input_file = ARGV[0]
 text = []
-@last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
-@line_count = 0
-@last_timestamp = 0
-@users = []
 
+def run file
+  Flamegraph.generate('flamegrapher.html') do
+  open_file file
+  puts(atLeastOneBlock(text))
+  puts()
+  puts(blockZero(text))
+  puts()
+  puts(validAddress(text))
+  puts()
+  puts(atLeastOneTransaction(text))
+  puts()
+  puts(lastTransactionFromSystem(text))
+  puts()
+  #puts(timeIncreaseCorrectly(text))
+  end
+end
 
-#Read text file
-#Eventually need to change to accept an input argument instead of hardcoded filename
-raise "Please enter a valid file" unless File.file?(input_file) #verifies that input file is a file
-File.open(input_file, "r") do |f|
+def open_file file
+  File.open(file, "r") do |f|
   f.each_line do |line|
     text << line
     # puts line
   end
 end
+end
+#raise "Enter a file to be verified" unless ARGV.count == 1 #verifies that an argument has been passed in
+#Read text file
+
 
 
 #print out the Blockchain into each block
@@ -270,9 +291,10 @@ def users text
 end
 
 
-def check_name giver, receiver, amount
+def search_users giver, receiver, amount
   giver_exists = false
   receiver_exists = false
+  exists = [giver_exists, receiver_exists]
   @users.each {|x|
     if giver == x.name
       x.coins -= amount
@@ -283,14 +305,18 @@ def check_name giver, receiver, amount
       receiver_exists = true
     end
   }
-  if(!giver_exists)
-    giv = Users::new giver, 0 - amount
-    @users << giv
+  return exists
+end 
+
+def add_user array, user, type, amount
+  if(type == 0)
+    giv = Users::new user, 0 - amount
+    array << giv
   end
 
-  if(!receiver_exists)
-    rec = Users::new receiver, amount
-    @users << rec
+  if(type == 1)
+    rec = Users::new user, amount
+    array << rec
   end
 end
 
@@ -306,9 +332,18 @@ end
 #check_timestamp text
 #users text
 
-check_name 'Bill', 'Gina', 500
-check_name 'Bill', 'Gina', 500
-print_users
+
+def users_run
+  ret_array = search_users 'Bill', 'Gina', 500
+  if ret_array[0] == false
+    add_user @users, "Bill", 0, 500
+  end
+  if ret_array[1] == false
+    add_user @users, 'Gina', 1, 500
+  end
+  print_users
+end
+
 
 #split_line(text, 2)
 #puts()
@@ -322,5 +357,5 @@ print_users
 #puts()
 #puts(lastTransactionFromSystem(text))
 puts()
-puts(timeIncreaseCorrectly(text))
-
+#puts(timeIncreaseCorrectly(text))
+end

@@ -21,7 +21,7 @@
           text << line
         end
       end
-      text = text[0]="0|0|Henry>SYSTEM(100)|1518892051.737141000|1c12"
+      text[0]="0|0|Henry>SYSTEM(100)|1518892051.737141000|1c12"
       assert_equal false , lastTransactionFromSystem(text)
     end
 

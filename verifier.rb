@@ -188,7 +188,7 @@ end
 #Verify Block 0 has only 1 transaction
 def blockZero(text)
   block0 = splitBlock(text, 0)
-  return block0.length > 4
+  return block0.length == 5
 end
 
 #Verify there is at least 1 block in the blockchain

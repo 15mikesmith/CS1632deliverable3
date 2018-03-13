@@ -1,4 +1,4 @@
-#class Verifier
+require_relative 'users'
 
 #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
@@ -12,6 +12,7 @@ text = []
 @line_count = 0
 @last_timestamp = 0
 @users = []
+
 
 #Read text file
 #Eventually need to change to accept an input argument instead of hardcoded filename
@@ -272,29 +273,30 @@ end
 def check_name giver, receiver, amount
   giver_exists = false
   receiver_exists = false
-  @names.each {|x|
-    if giver == x
-      giver.coins -= amount
+  @users.each {|x|
+    if giver == x.name
+      x.coins -= amount
       giver_exists = true
     end
-    if receiver == x
-      receiver.coins += amount
+    if receiver == x.name
+      x.coins += amount
       receiver_exists = true
     end
   }
-=begin
   if(!giver_exists)
-    giv = Users::new giv, amount
-    @names << giv
+    giv = Users::new giver, 0 - amount
+    @users << giv
   end
 
   if(!receiver_exists)
     rec = Users::new receiver, amount
-    @names << rec
+    @users << rec
   end
-=end
 end
 
+def print_users
+  @users.each {|x| puts "#{x.name}: #{x.coins} billcoins"}
+end 
 #TEST METHODS
 
 #printBlockChain(text)
@@ -303,7 +305,10 @@ end
 #check_hash text
 #check_timestamp text
 #users text
-#check_name 'Bill', 'Gina', 500
+
+check_name 'Bill', 'Gina', 500
+check_name 'Bill', 'Gina', 500
+print_users
 
 #split_line(text, 2)
 #puts()
@@ -319,4 +324,3 @@ end
 puts()
 puts(timeIncreaseCorrectly(text))
 
-#end

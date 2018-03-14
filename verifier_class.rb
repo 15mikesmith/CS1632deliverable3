@@ -29,12 +29,12 @@ class Verifier
       if(!timeIncreaseCorrectly @text)
         exit(1)
       end
-      if(!check_hash @text)
-        exit(1)
-      end
-      if(!incrementCorrectly @text)
-        exit(1)
-      end
+      #if(!check_hash @text)
+       # exit(1)
+      #end
+      #if(!incrementCorrectly @text)
+       # exit(1)
+     # end
       if(!atLeastOneBlock @text)
         exit(1)
       end
@@ -51,6 +51,9 @@ class Verifier
         exit(1)
       end
       users_run @text
+      if !check_bitcoins 
+        exit(1)
+      end
       print_users
       #puts(timeIncreaseCorrectly(text))
     end
@@ -393,8 +396,17 @@ end
 
   def print_users
     @users.each {|x|
-      if x.name != "SYSTEM" && x.coins > 0
+      if x.name != "SYSTEM" 
         puts "#{x.name}: #{x.coins} billcoins"
+      end
+    }
+  end
+
+  def check_bitcoins
+    @users.each {|x|
+      if x.coins < 0 && x.name != "SYSTEM"
+        puts "ERROR: #{x.name}: invalid bitcoins #{x.coins}"
+        return false
       end
     }
   end

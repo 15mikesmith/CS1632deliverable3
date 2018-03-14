@@ -1,18 +1,18 @@
 require_relative 'users'
-require 'flamegraph'
+#require 'flamegraph'
 
 
-class Verifier
+#class Verifier
 #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
-#doc = []
+doc = []
 
-#File.open("1000.txt", "r") do |f|
-#  f.each_line do |line|
-#    doc << line
-#    # puts line
-#  end
-#end
+File.open("100.txt", "r") do |f|
+  f.each_line do |line|
+    doc << line
+    # puts line
+  end
+end
 
   def initialize
     @last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
@@ -432,5 +432,6 @@ end
     end
   end
 
+puts(incrementCorrectly(doc))
 
-end
+#end

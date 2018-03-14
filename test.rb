@@ -4,8 +4,8 @@
 
 #Array to hold text. Structure is: Each index corresponds to a line in the file
 
-raise "Enter a file to be verified" unless ARGV.count == 1 #verifies that an argument has been passed in
-input_file = ARGV[0]
+#raise "Enter a file to be verified" unless ARGV.count == 1 #verifies that an argument has been passed in
+input_file = "sample.txt"
 text = []
 
 

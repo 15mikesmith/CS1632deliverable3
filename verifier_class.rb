@@ -16,7 +16,6 @@ class Verifier
 
   def initialize
     @last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
-    @line_count = 0
     @last_timestamp = 0
     @users = []
     @text = []
@@ -51,7 +50,7 @@ class Verifier
         exit(1)
       end
       users_run @text
-      if !check_bitcoins 
+      if !check_bitcoins @text 
         exit(1)
       end
       print_users
@@ -402,8 +401,8 @@ end
     }
   end
 
-  def check_bitcoins
-    @users.each {|x|
+  def check_bitcoins array
+    array.each {|x|
       if x.coins < 0 && x.name != "SYSTEM"
         puts "ERROR: #{x.name}: invalid bitcoins #{x.coins}"
         return false

@@ -16,7 +16,6 @@ end
 
   def initialize
     @last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
-    @line_count = 0
     @last_timestamp = 0
     @users = []
     @text = []
@@ -29,12 +28,12 @@ end
       if(!timeIncreaseCorrectly @text)
         exit(1)
       end
-      if(!check_hash @text)
-        exit(1)
-      end
-      if(!incrementCorrectly @text)
-        exit(1)
-      end
+      #if(!check_hash @text)
+       # exit(1)
+      #end
+      #if(!incrementCorrectly @text)
+       # exit(1)
+     # end
       if(!atLeastOneBlock @text)
         exit(1)
       end
@@ -51,6 +50,9 @@ end
         exit(1)
       end
       users_run @text
+      if !check_bitcoins @text 
+        exit(1)
+      end
       print_users
       #puts(timeIncreaseCorrectly(text))
     end
@@ -393,8 +395,17 @@ end
 
   def print_users
     @users.each {|x|
-      if x.name != "SYSTEM" && x.coins > 0
+      if x.name != "SYSTEM" 
         puts "#{x.name}: #{x.coins} billcoins"
+      end
+    }
+  end
+
+  def check_bitcoins array
+    array.each {|x|
+      if x.coins < 0 && x.name != "SYSTEM"
+        puts "ERROR: #{x.name}: invalid bitcoins #{x.coins}"
+        return false
       end
     }
   end

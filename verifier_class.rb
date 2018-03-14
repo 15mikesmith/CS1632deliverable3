@@ -29,7 +29,7 @@ class Verifier
       #check_timestamp @text
       puts(timeIncreaseCorrectly @text)
       puts(check_hash @text)
-      puts(incrementCorrectly @text)
+      #puts(incrementCorrectly @text)
       atLeastOneBlock(@text)
       blockZero(@text)
       validAddress(@text)
@@ -128,7 +128,7 @@ class Verifier
       return false
     end
   end
-end
+
 
 def timeIncreaseCorrectly(text)
 
@@ -153,7 +153,7 @@ def timeIncreaseCorrectly(text)
     if (times[y].to_i < times[y - 1].to_i)
       #puts(times[y])
       #puts(times[y - 1])
-      return false
+      raise "TIMESTAMP ERROR: at line #{y} #{times[y].to_i} < #{times[y - 1].to_i}"
     end
     y += 1
   end
@@ -305,14 +305,13 @@ end
 
 # method to check the generated hash
 def check_hash text
-  def check_hash text
-    i = 0
-    var = true
-    while i < text.length
-      var = verifyHashForBlock text, i
-      i += 1
-    end
+   i = 0
+  var = true
+  while i < text.length
+    var = verifyHashForBlock text, i
+    i += 1
   end
+end
 
 
   def create_var text

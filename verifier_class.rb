@@ -1,13 +1,13 @@
 require_relative 'users'
-#require 'flamegraph'
+require 'flamegraph'
 
 
-#class Verifier
+class Verifier
 #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
 doc = []
 
-File.open("100.txt", "r") do |f|
+File.open("long.txt", "r") do |f|
   f.each_line do |line|
     doc << line
     # puts line
@@ -305,10 +305,13 @@ end
 
 
 #Verify transactions increment correctly
-def incrementCorrectly(block)
+def incrementCorrectly(text)
   count = 0
-  for i in block
-    if !(count.to_s == i[0].to_s)
+  #for i in block
+  while count < text.length
+    block = splitBlock(text, count)
+
+    if !(count.to_s == block[0].to_s)
       puts "ERROR"
       return false
     end
@@ -443,6 +446,6 @@ end
     end
   end
 
-puts(incrementCorrectly(doc))
+#puts(incrementCorrectly(doc))
 
-#end
+end

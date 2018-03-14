@@ -1,7 +1,10 @@
   require 'minitest/autorun'
-  require_relative './verifier'
+  require_relative './verifier_class'
   class TimeIncreaseCorrectly_test < Minitest::Test
 
+    def setup
+      @ver = Verifier::new 
+    end
     #Test to see whether timeIncreaseCorrectly method returns true when time stamps are increasing and false when decreasing
     def test_time_increasing
       text = []
@@ -10,7 +13,7 @@
           text << line
         end
       end
-      assert_equal true , timeIncreaseCorrectly(text)
+      assert_equal true , @ver.timeIncreaseCorrectly(text)
 
     end
 
@@ -22,7 +25,7 @@
         end
       end
       text = text.reverse
-      assert_equal false , timeIncreaseCorrectly(text)
+      assert_equal false , @ver.timeIncreaseCorrectly(text)
     end
 
   end

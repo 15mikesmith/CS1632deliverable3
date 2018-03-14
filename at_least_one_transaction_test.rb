@@ -1,7 +1,10 @@
   require 'minitest/autorun'
-  require_relative './verifier'
+  require_relative './verifier_class'
   class AtLeastOneTransaction_test < Minitest::Test
 
+  def setup
+    @ver = Verifier::new 
+  end
     #Test to see whether the last transaction in each block is from SYSTEM
     def test_one_transaction
       text = []
@@ -10,7 +13,7 @@
           text << line
         end
       end
-      assert_equal true , atLeastOneTransaction(text)
+      assert_equal true , @ver.atLeastOneTransaction(text)
 
     end
 
@@ -22,7 +25,7 @@
         end
       end
       text = text[0]="0|0|1518892051.737141000|1c12"
-      assert_equal false , atLeastOneTransaction(text)
+      assert_equal false , @ver.atLeastOneTransaction(text)
     end
 
   end

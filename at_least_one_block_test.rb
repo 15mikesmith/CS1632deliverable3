@@ -1,6 +1,10 @@
   require 'minitest/autorun'
-  require_relative './verifier'
+  require_relative './verifier_class'
   class AtLeastOneBlock_test < Minitest::Test
+
+  def setup
+    @ver = Verifier::new 
+  end
 
     #Test to see whether block 0 only contains 1 transaction
     def test_block_zero_valid
@@ -10,7 +14,7 @@
           text << line
         end
       end
-      assert_equal true , atLeastOneBlock(text)
+      assert_equal true , @ver.atLeastOneBlock(text)
 
     end
 
@@ -22,7 +26,7 @@
         end
       end
       text = ""
-      assert_equal false , atLeastOneBlock(text)
+      assert_equal false , @ver.atLeastOneBlock(text)
     end
 
   end

@@ -1,9 +1,12 @@
   require 'minitest/autorun'
-  require_relative './verifier'
+  require_relative './verifier_class'
   class SplitBlock_test < Minitest::Test
 
     #Test to see whether splitBock method splits a given block correctly into seperate components
 
+    def setup
+      @ver = Verifier::new 
+    end
     def test_split_block_correctly
       text = []
       File.open("sample.txt", "r") do |f|
@@ -11,7 +14,7 @@
           text << line
         end
       end
-      test = splitBlock(text, 0)
+      test = @ver.splitBlock(text, 0)
 
       assert_equal 5, test.length
     end

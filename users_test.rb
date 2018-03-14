@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative './verifier'
+require_relative './verifier_class'
 require_relative 'users'
 
 class Users_test < Minitest::Test
@@ -19,18 +19,13 @@ class Users_test < Minitest::Test
 	end
 
 	def test_user_search
-		giv = Users::new 'Phil', 200
-		rec = Users::new 'Jo', 100
+		phil = Users::new 'Phil', 200
 		array = []
-		array << giv
-		array << rec
-		val = verifier.search_users array, giv.name, rec.name, 50
-		assert_equal val[0], true 
-		assert_equal val[1], true
+		array << phil
+		val = @verifier.search_users array, phil.name
+		assert_equal val, true 
 	end
 
-	def test_print_users
-	end
 
 
 end

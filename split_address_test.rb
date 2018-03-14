@@ -1,8 +1,11 @@
 require 'minitest/autorun'
-require_relative './verifier'
+require_relative './verifier_class'
 class SplitAddress_test < Minitest::Test
 
   #Test to see whether splitBock method splits a given block correctly into seperate components
+  def setup
+    @ver = Verifier::new 
+  end
 
   def test_split_address_firstT_correctly
     text = []
@@ -11,7 +14,7 @@ class SplitAddress_test < Minitest::Test
         text << line
       end
     end
-    block = splitBlock(text, 0)
+    block = @ver.splitBlock(text, 0)
 
     #Remove first 2 elements
     onlyAddresses = block.drop(2)
@@ -22,7 +25,7 @@ class SplitAddress_test < Minitest::Test
     #puts(onlyAddresses)
 
     #Split via > Symbol
-    newAddress = splitAddress(onlyAddresses)
+    newAddress = @ver.splitAddress(onlyAddresses)
 
     assert_equal ["SYSTEM","Henry(100)"], newAddress
   end
@@ -34,7 +37,7 @@ class SplitAddress_test < Minitest::Test
         text << line
       end
     end
-    block = splitBlock(text, 9)
+    block = @ver.splitBlock(text, 9)
 
     #Remove first 2 elements
     onlyAddresses = block.drop(2)
@@ -45,7 +48,7 @@ class SplitAddress_test < Minitest::Test
     #puts(onlyAddresses)
 
     #Split via > Symbol
-    newAddress = splitAddress(onlyAddresses)
+    newAddress = @ver.splitAddress(onlyAddresses)
 
     assert_equal ["Henry","Pakal(10)","SYSTEM","Amina(100)"], newAddress
   end

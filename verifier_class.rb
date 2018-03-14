@@ -26,9 +26,8 @@ class Verifier
   def run file
     Flamegraph.generate('flamegrapher.html') do
       open_file file, @text
-      #check_timestamp @text
-      puts(timeIncreaseCorrectly @text)
-      puts(check_hash @text)
+      if(!timeIncreaseCorrectly @text)
+      check_hash @text
       #puts(incrementCorrectly @text)
       atLeastOneBlock(@text)
       blockZero(@text)
@@ -153,7 +152,8 @@ def timeIncreaseCorrectly(text)
     if (times[y].to_i < times[y - 1].to_i)
       #puts(times[y])
       #puts(times[y - 1])
-      raise "TIMESTAMP ERROR: at line #{y} #{times[y].to_i} < #{times[y - 1].to_i}"
+      puts "TIMESTAMP ERROR: at line #{y} #{times[y].to_i} < #{times[y - 1].to_i}"
+      return false
     end
     y += 1
   end
@@ -213,6 +213,7 @@ def atLeastOneTransaction(text)
     onlyAddresses = onlyAddresses.reverse.drop(2).reverse
 
     if onlyAddresses.length == 0
+      puts "AT LEAST ONE TRANSACTION ERROR: at line #{x}"
       return false
     end
 
@@ -289,7 +290,8 @@ def incrementCorrectly(block)
   count = 0
   for i in block
     if !(count.to_s == i[0].to_s)
-      raise "ERROR"
+      puts "ERROR"
+      return false
     end
     count += 1
   end
@@ -305,23 +307,15 @@ end
 
 # method to check the generated hash
 def check_hash text
-   i = 0
+  i = 0
   var = true
   while i < text.length
     var = verifyHashForBlock text, i
     i += 1
   end
+  return var
 end
 
-
-  def create_var text
-    split_val = split_line(text, @line_count)
-    curr_hash = split_val[1]
-    transactions = split_val[2]
-    timestamp = split_val[3]
-    old_hash = split_val[4]
-    return split_val
-  end
 
 
   def generate_hash val
@@ -332,18 +326,7 @@ end
     # hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
   end
 
-  def check_timestamp text
-    x = 0
-    while x < text.length
-      split_val = split_line(text, x)
-      timestamp = split_val[3].to_f
-      #puts("TIMESTAMP: #{timestamp} & LINECOUNT = #{@line_count}")
-      raise "Timestamp incorrect" unless timestamp >= @last_timestamp
-      @last_timestamp = timestamp
-      x += 1
-
-    end
-  end
+  
 
 
   def users text

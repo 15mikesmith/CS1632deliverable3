@@ -5,14 +5,6 @@ require 'flamegraph'
 class Verifier
 #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
-doc = []
-
-File.open("long.txt", "r") do |f|
-  f.each_line do |line|
-    doc << line
-    # puts line
-  end
-end
 
   def initialize
     @last_hash = 0 # a global variable to hold the last hash to compare to the hash generated
@@ -31,9 +23,9 @@ end
       #if(!check_hash @text)
        # exit(1)
       #end
-      #if(!incrementCorrectly @text)
-       # exit(1)
-     # end
+      if(!incrementCorrectly @text)
+        exit(1)
+      end
       if(!atLeastOneBlock @text)
         exit(1)
       end
@@ -50,7 +42,7 @@ end
         exit(1)
       end
       users_run @text
-      if !check_bitcoins @text 
+      if !check_bitcoins @users
         exit(1)
       end
       print_users
@@ -312,7 +304,7 @@ def incrementCorrectly(text)
     block = splitBlock(text, count)
 
     if !(count.to_s == block[0].to_s)
-      puts "ERROR"
+      puts "ERROR: Incremented Incorrectly at line #{count}\n #{block[0].to_s} should be #{count.to_s}"
       return false
     end
     count += 1

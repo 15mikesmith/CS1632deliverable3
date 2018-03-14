@@ -15,14 +15,14 @@ class Verifier
 
 
   def run file
-    Flamegraph.generate('flamegrapher.html') do
+    Flamegraph.generate('flamegrapher-hash.html') do
       open_file file, @text
       if(!timeIncreaseCorrectly @text)
         exit(1)
       end
-      #if(!check_hash @text)
-       # exit(1)
-      #end
+      if(!check_hash @text)
+        exit(1)
+      end
       if(!incrementCorrectly @text)
         exit(1)
       end
@@ -134,7 +134,7 @@ class Verifier
     if (s.eql? fifth)
       return true
     else
-      puts "HASH ERROR: at line #{block} \nHash #{s} should be #{fifth}"
+      puts "HASH ERROR: at line #{block} \nHash #{fifth} should be #{s}"
       return false
     end
   end

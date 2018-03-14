@@ -1,8 +1,8 @@
 require_relative 'users'
-#require 'flamegraph'
+require 'flamegraph'
 
 
-#class Verifier
+class Verifier
 #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
 doc = []
@@ -433,6 +433,7 @@ end
 #puts(lastTransactionFromSystem(text))
 #puts()
 #puts(timeIncreaseCorrectly(text))
+=begin
 x = 0
 while x < doc.length
 puts()
@@ -440,4 +441,6 @@ puts(x)
 puts(verifyHashForBlock(doc, x))
 x += 1
 end
-#end
+=end
+
+end

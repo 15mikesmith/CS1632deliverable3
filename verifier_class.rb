@@ -28,7 +28,7 @@ def run file
   open_file file, @text
   #check_timestamp @text
   puts(timeIncreaseCorrectly @text)
-  check_hash @text
+  puts(check_hash @text)
   atLeastOneBlock(@text) 
   blockZero(@text)
   validAddress(@text)
@@ -345,70 +345,100 @@ def check_timestamp text
 end
 
 
+
 def users text
-  users = text.split(/[()>]/)
+  users = text.split(/[()>:]/)
   return users
 end
 
 
-def search_users giver, receiver, amount
-  giver_exists = false
-  receiver_exists = false
+def billcoin_handler_giver giver, amount
+  ret = false
   @users.each {|x|
     if giver == x.name
       x.coins -= amount
-      giver_exists = true
-    end
-    if receiver == x.name
-      x.coins += amount
-      receiver_exists = true
+      ret = true
     end
   }
+  return ret
+end 
 
-  exists = [giver_exists, receiver_exists]
-  puts exists
-  return exists
+def billcoin_handler_receiver receiver, amount
+  @users.each {|x|
+    if receiver == x.name
+      x.coins += amount
+    end
+  }
 end
 
+def search_users array, user
+  var = false
+  array.each {|x|
+    if user == x.name
+      var = true
+    end
+    }
+    return var
+    
+end
 
-def add_user user, type, amount
-  if (type == 0)
+def add_user  user, type, amount
+  if(Float(user) != nil rescue false)
+    return
+  end
+  if user.to_s.empty?
+    return
+  end
+  if(type == 0)
     giv = Users::new user, 0
     @users << giv
   end
 
-  if (type == 1)
+  if(type == 1)
     rec = Users::new user, amount
     @users << rec
   end
 end
 
 def print_users
-  @users.each {|x|
-    if x.name != "SYSTEM"
+  @users.each {|x| 
+    if x.name != "SYSTEM" && x.coins > 0
       puts "#{x.name}: #{x.coins} billcoins"
     end
   }
-end
-
+end 
 
 
 
 def users_run text
+  x = 0
   i = 0
   info = []
-  while i < text.length
-    curr_text = splitBlock(text, i)
-    puts curr_text[2]
+  while x < text.length
+    curr_text = split_line(text, x)
     info = users curr_text[2]
-    ret_array = search_users info[0], info[1], info[2].to_i
-    if ret_array[0] == false
-      add_user info[0], 0, info[2].to_i
+    i = 0
+
+
+    for i in 0...info.length
+     giv = i
+     rec = i + 1
+     amount = i + 2
+
+      if(search_users @users, info[i])
+        billcoin_handler_giver info[giv], info[amount].to_i
+      else
+        add_user info[giv], 0, info[amount].to_i
+      end
+
+      if(search_users @users, info[rec])
+        billcoin_handler_receiver info[rec], info[amount].to_i
+      else
+        add_user info[rec], 1, info[amount].to_i
+      end
+      i += 3
     end
-    if ret_array[1] == false
-      add_user info[1], 1, info[2].to_i
-    end
-    i += 1
+    x += 1
   end
 end
 

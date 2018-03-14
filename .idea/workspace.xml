@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="180bb05f-6e90-4267-84b0-1c453d358dd2" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/test.rb" afterPath="$PROJECT_DIR$/test.rb" />
-      <change beforePath="$PROJECT_DIR$/verifier_class.rb" afterPath="$PROJECT_DIR$/verifier_class.rb" />
-    </list>
+    <list default="true" id="180bb05f-6e90-4267-84b0-1c453d358dd2" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,8 +60,8 @@
       <file leaf-file-name="verifier_class.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/verifier_class.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-979">
-              <caret line="370" column="5" lean-forward="true" selection-start-line="370" selection-start-column="5" selection-end-line="370" selection-end-column="5" />
+            <state relative-caret-position="386">
+              <caret line="435" column="0" lean-forward="true" selection-start-line="435" selection-start-column="0" selection-end-line="435" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -322,7 +318,7 @@
       <workItem from="1520879343722" duration="2456000" />
       <workItem from="1520891656493" duration="9181000" />
       <workItem from="1520978597712" duration="9837000" />
-      <workItem from="1521034153026" duration="1747000" />
+      <workItem from="1521034153026" duration="1772000" />
     </task>
     <servers />
   </component>
@@ -359,7 +355,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23221000" />
+    <option name="totallyTimeSpent" value="23246000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -596,8 +592,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/verifier_class.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-979">
-          <caret line="370" column="5" lean-forward="true" selection-start-line="370" selection-start-column="5" selection-end-line="370" selection-end-column="5" />
+        <state relative-caret-position="386">
+          <caret line="435" column="0" lean-forward="true" selection-start-line="435" selection-start-column="0" selection-end-line="435" selection-end-column="0" />
           <folding />
         </state>
       </provider>

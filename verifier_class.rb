@@ -160,7 +160,7 @@ def timeIncreaseCorrectly(text)
   while (y < times.length)
     #puts(times[y])
     #puts(times[y-1])
-    if (times[y].to_f < times[y - 1].to_f)
+    if (times[y].to_i < times[y - 1].to_i)
       #puts(times[y])
       #puts(times[y - 1])
       puts "TIMESTAMP ERROR: at line #{y} #{times[y].to_f} < #{times[y - 1].to_f}"

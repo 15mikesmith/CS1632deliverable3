@@ -27,13 +27,29 @@ class Verifier
     Flamegraph.generate('flamegrapher.html') do
       open_file file, @text
       if(!timeIncreaseCorrectly @text)
-      check_hash @text
-      #puts(incrementCorrectly @text)
-      atLeastOneBlock(@text)
-      blockZero(@text)
-      validAddress(@text)
-      atLeastOneTransaction(@text)
-      lastTransactionFromSystem(@text)
+        exit(1)
+      end
+      if(!check_hash @text)
+        exit(1)
+      end
+      if(!incrementCorrectly @text)
+        exit(1)
+      end
+      if(!atLeastOneBlock @text)
+        exit(1)
+      end
+      if(!blockZero @text)
+        exit(1)
+      end
+      if(!validAddress @text)
+        exit(1)
+      end
+      if(!atLeastOneTransaction @text)
+        exit(1)
+      end
+      if(!lastTransactionFromSystem @text)
+        exit(1)
+      end
       users_run @text
       print_users
       #puts(timeIncreaseCorrectly(text))
@@ -116,14 +132,15 @@ class Verifier
 
 
     answer2 = answer.to_s(16)
-    puts(answer2)
-    puts(fifth)
+   # puts(answer2)
+   # puts(fifth)
 
     s = answer2.encode("UTF-8")
 
     if (s.eql? fifth)
       return true
     else
+      puts "HASH ERROR: at line #{block} \nHash #{s} should be #{fifth}"
       return false
     end
   end
@@ -311,24 +328,15 @@ def check_hash text
   var = true
   while i < text.length
     var = verifyHashForBlock text, i
+    if(!var)
+      exit(1)
+    end
     i += 1
   end
   return var
 end
 
-
-
-  def generate_hash val
-    for i in 1...5
-      hash_val = hash_val + val[i].encode!('UTF-16', 'UTF-8')
-    end
-    @last_hash = val[@line_count]
-    # hash_val = string_to_hash(curr_hash) + string_to_hash(transactions) + string_to_hash(timestamp) + string_to_hash(old_hash)
-  end
-
   
-
-
   def users text
     users = text.split(/[()>:]/)
     return users

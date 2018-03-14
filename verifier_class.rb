@@ -29,6 +29,7 @@ class Verifier
       #check_timestamp @text
       puts(timeIncreaseCorrectly @text)
       puts(check_hash @text)
+      puts(incrementCorrectly @text)
       atLeastOneBlock(@text)
       blockZero(@text)
       validAddress(@text)
@@ -288,7 +289,7 @@ def incrementCorrectly(block)
   count = 0
   for i in block
     if !(count.to_s == i[0].to_s)
-      return false
+      raise "ERROR"
     end
     count += 1
   end

@@ -1,13 +1,13 @@
 require_relative 'users'
-require 'flamegraph'
+#require 'flamegraph'
 
 
-class Verifier
+#class Verifier
 #The program shall accept one argument, which is the name of a file which should contain a valid Billcoin blockchain
 
 doc = []
 
-File.open("sample.txt", "r") do |f|
+File.open("1000.txt", "r") do |f|
   f.each_line do |line|
     doc << line
     # puts line
@@ -79,13 +79,26 @@ def has_digits?(str)
 end
 
 # Boolean methods to verify different aspects of the block are valid
+def getFifth(text, block)
+  result = splitBlock(text, block)
+  fifth = result.pop()
+end
 
-def verifyHashForBlock(text,block)
+def verifyHashForBlock(text, block)
 
-  block = text[block]
-  fifth = block[block.length-5...block.length-1]
+  b = text[block]
+  fifth = getFifth(text, block) #block[block.length-5...block.length-1]
+  fifth = fifth.gsub("\n", '')
 
-  word = block[0...block.length-6]
+  if (fifth.length == 4)
+    word = b[0...b.length - 6]
+  elsif(fifth.length == 3)
+  word = b[0...b.length - 5]
+  elsif(fifth.length == 2)
+  word = b[0...b.length - 4]
+  else
+    word = b[0...b.length - 3]
+  end
 
   word = word.unpack('U*')
 
@@ -420,5 +433,11 @@ end
 #puts(lastTransactionFromSystem(text))
 #puts()
 #puts(timeIncreaseCorrectly(text))
-#puts(verifyHashForBlock(doc,0))
+x = 0
+while x < doc.length
+puts()
+puts(x)
+puts(verifyHashForBlock(doc, x))
+x += 1
 end
+#end

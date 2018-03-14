@@ -15,15 +15,15 @@ class Verifier
 
 
   def run file
-    Flamegraph.generate('flamegrapher-hash.html') do
+    Flamegraph.generate('flamegrapher.html') do
       open_file file, @text
       if(!timeIncreaseCorrectly @text)
         exit(1)
       end
-      if(!check_hash @text)
+      if(!incrementCorrectly @text)
         exit(1)
       end
-      if(!incrementCorrectly @text)
+      if(!check_hash @text)
         exit(1)
       end
       if(!atLeastOneBlock @text)
@@ -160,10 +160,10 @@ def timeIncreaseCorrectly(text)
   while (y < times.length)
     #puts(times[y])
     #puts(times[y-1])
-    if (times[y].to_i < times[y - 1].to_i)
+    if (times[y].to_f < times[y - 1].to_f)
       #puts(times[y])
       #puts(times[y - 1])
-      puts "TIMESTAMP ERROR: at line #{y} #{times[y].to_i} < #{times[y - 1].to_i}"
+      puts "TIMESTAMP ERROR: at line #{y} #{times[y].to_f} < #{times[y - 1].to_f}"
       return false
     end
     y += 1
@@ -212,7 +212,7 @@ def lastTransactionFromSystem(text)
   return true
 end
 
-
+#Verifies that there is at least on transaction on the file
 def atLeastOneTransaction(text)
   x = 0
   while x < text.length
@@ -304,7 +304,7 @@ def incrementCorrectly(text)
     block = splitBlock(text, count)
 
     if !(count.to_s == block[0].to_s)
-      puts "ERROR: Incremented Incorrectly at line #{count}\n #{block[0].to_s} should be #{count.to_s}"
+      puts "ERROR: Incremented Incorrectly at line #{count}\nLine #{block[0].to_s} should be Line #{count.to_s}"
       return false
     end
     count += 1
@@ -339,7 +339,7 @@ end
     return users
   end
 
-
+# method to handle billcoins given
   def billcoin_handler_giver giver, amount
     ret = false
     @users.each {|x|
@@ -350,7 +350,7 @@ end
     }
     return ret
   end
-
+# method to handle billcoins recieved
   def billcoin_handler_receiver receiver, amount
     @users.each {|x|
       if receiver == x.name
@@ -358,7 +358,7 @@ end
       end
     }
   end
-
+# method to search users
   def search_users array, user
     var = false
     array.each {|x|
@@ -369,7 +369,7 @@ end
     return var
 
   end
-
+# method to add a user to the array
   def add_user user, type, amount
     if (Float(user) != nil rescue false)
       return
@@ -387,7 +387,7 @@ end
       @users << rec
     end
   end
-
+# method that prints users if there were no other problems
   def print_users
     @users.each {|x|
       if x.name != "SYSTEM" 
@@ -395,7 +395,7 @@ end
       end
     }
   end
-
+# method that checks billcoins to make sure none are negative
   def check_bitcoins array
     array.each {|x|
       if x.coins < 0 && x.name != "SYSTEM"
@@ -405,7 +405,7 @@ end
     }
   end
 
-
+# method that runs how the users are handled
   def users_run text
     x = 0
     i = 0
@@ -438,6 +438,6 @@ end
     end
   end
 
-#puts(incrementCorrectly(doc))
+
 
 end
